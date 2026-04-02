@@ -74,8 +74,8 @@ const AdminDashboard = () => {
       setFeedbackList(response.data);
       setTotalPages(Math.ceil(response.data.length / itemsPerPage));
     } catch (err) {
-      setError('Failed to fetch feedback data');
-      console.error('Error fetching feedback:', err);
+      console.error('Dashboard API Error:', err);
+      setError(`Failed to fetch feedback: ${err.message || 'Network error'}`);
     } finally {
       setLoading(false);
     }

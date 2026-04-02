@@ -67,8 +67,8 @@ const Analytics = () => {
       setRatingsData(ratingsArray);
       setSentimentsData(sentimentsArray);
     } catch (err) {
-      setError('Failed to fetch analytics data');
-      console.error('Error fetching analytics:', err);
+      console.error('Analytics API Error:', err);
+      setError(`Failed to fetch analytics: ${err.message || 'Network error'}`);
     } finally {
       setLoading(false);
     }
@@ -98,6 +98,24 @@ const Analytics = () => {
       </Container>
     );
   }
+
+  // Fallback data if no data available
+  const fallbackRatings = [
+    { rating: '1 Star', count: 0, value: 1 },
+    { rating: '2 Stars', count: 0, value: 2 },
+    { rating: '3 Stars', count: 0, value: 3 },
+    { rating: '4 Stars', count: 0, value: 4 },
+    { rating: '5 Stars', count: 0, value: 5 }
+  ];
+
+  const fallbackSentiments = [
+    { name: 'Positive', value: 0, sentiment: 'positive' },
+    { name: 'Negative', value: 0, sentiment: 'negative' },
+    { name: 'Neutral', value: 0, sentiment: 'neutral' }
+  ];
+
+  const displayRatings = ratingsData.length > 0 ? ratingsData : fallbackRatings;
+  const displaySentiments = sentimentsData.length > 0 ? sentimentsData : fallbackSentiments;
 
   return (
     <Container maxWidth="lg">
@@ -169,14 +187,14 @@ const Analytics = () => {
               Ratings Distribution
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={ratingsData}>
+              <BarChart data={displayRatings}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="rating" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="count" name="Number of Reviews">
-                  {ratingsData.map((entry, index) => (
+                  {displayRatings.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={ratingColors[index]} />
                   ))}
                 </Bar>
@@ -193,7 +211,7 @@ const Analytics = () => {
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={sentimentsData}
+                  data={displaySentiments}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -202,7 +220,7 @@ const Analytics = () => {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {sentimentsData.map((entry, index) => (
+                  {displaySentiments.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[entry.sentiment]} />
                   ))}
                 </Pie>

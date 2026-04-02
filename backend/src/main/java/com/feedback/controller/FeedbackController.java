@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/feedback")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://smartfeed-ldqu.onrender.com")
 public class FeedbackController {
     
     private final FeedbackService feedbackService;

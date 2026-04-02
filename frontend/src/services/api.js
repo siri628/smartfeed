@@ -9,7 +9,32 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout
 });
+
+// Add request interceptor for debugging
+api.interceptors.request.use(
+  (request) => {
+    console.log('API Request:', request);
+    return request;
+  },
+  (error) => {
+    console.log('API Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  (response) => {
+    console.log('API Response:', response);
+    return response;
+  },
+  (error) => {
+    console.log('API Response Error:', error);
+    return Promise.reject(error);
+  }
+);
 
 export const feedbackAPI = {
   submitFeedback: (feedbackData) => api.post('/feedback', feedbackData),

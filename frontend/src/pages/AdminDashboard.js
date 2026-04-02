@@ -118,10 +118,9 @@ const AdminDashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const paginatedFeedback = feedbackList.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  const paginatedFeedback = Array.isArray(feedbackList) 
+    ? feedbackList.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+    : [];
 
   return (
     <Container maxWidth="xl">
@@ -238,7 +237,7 @@ const AdminDashboard = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                paginatedFeedback.map((feedback) => (
+                Array.isArray(paginatedFeedback) && paginatedFeedback.map((feedback) => (
                   <TableRow key={feedback.id}>
                     <TableCell>{feedback.id}</TableCell>
                     <TableCell>{feedback.name}</TableCell>

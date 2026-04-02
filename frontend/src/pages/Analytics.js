@@ -75,17 +75,17 @@ const Analytics = () => {
   };
 
   const getTotalFeedback = () => {
-    return ratingsData.reduce((sum, item) => sum + item.count, 0);
+    return Array.isArray(ratingsData) ? ratingsData.reduce((sum, item) => sum + item.count, 0) : 0;
   };
 
   const getAverageRating = () => {
-    if (ratingsData.length === 0) return 0;
+    if (!Array.isArray(ratingsData) || ratingsData.length === 0) return 0;
     const totalRating = ratingsData.reduce((sum, item) => sum + (item.value * item.count), 0);
     return (totalRating / getTotalFeedback()).toFixed(1);
   };
 
   const getDominantSentiment = () => {
-    if (sentimentsData.length === 0) return 'N/A';
+    if (!Array.isArray(sentimentsData) || sentimentsData.length === 0) return 'N/A';
     return sentimentsData.reduce((max, item) => item.value > max.value ? item : max).name;
   };
 

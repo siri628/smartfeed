@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api'  // For production (will work with backend on same domain)
+  ? 'https://smart-feedback-backend.onrender.com/api'  // Render backend URL
   : 'http://localhost:9999/api'; // For development
 
 const api = axios.create({

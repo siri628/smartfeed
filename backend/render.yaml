@@ -1,0 +1,14 @@
+services:
+  # Spring Boot Backend Service
+  - type: web
+    name: smart-feedback-backend
+    env: java
+    plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/smart-feedback-system-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
+      - key: PORT
+        value: 8080
+    healthCheckPath: /actuator/health

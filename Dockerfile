@@ -1,25 +1,26 @@
 # Use official OpenJDK 17 runtime as a parent image
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-alpine
+
+# Install Maven
+RUN apk add --no-cache maven
 
 # Set working directory
 WORKDIR /app
 
-# Copy maven wrapper and pom.xml for dependency caching
-COPY backend/mvnw backend/mvnw
-COPY backend/.mvn backend/.mvn
-COPY backend/pom.xml backend/pom.xml
+# Copy pom.xml first for better caching
+COPY backend/pom.xml .
 
 # Download dependencies
-RUN cd backend && ./mvnw dependency:go-offline -B
+RUN mvn dependency:go-offline -B
 
 # Copy source code
-COPY backend/src backend/src
+COPY backend/src ./src
 
 # Build the application
-RUN cd backend && ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Expose port
 EXPOSE 8080
 
 # Run the application
-CMD ["java", "-jar", "backend/target/smart-feedback-system.jar", "--spring.profiles.active=render"]
+CMD ["java", "-jar", "target/smart-feedback-system.jar", "--spring.profiles.active=render"]

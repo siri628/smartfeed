@@ -108,12 +108,14 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchFeedback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!searchQuery && !filterRating && !filterCategory && !filterSentiment) {
       fetchFeedback();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const paginatedFeedback = feedbackList.slice(
